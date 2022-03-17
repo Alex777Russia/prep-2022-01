@@ -47,10 +47,8 @@ int main(int argc, const char** argv) {
             break;
         }
         case TST_MOD_IMPL: {
-            // int num = atoi(data);
-
-            // This function MUST be implemented in
-            // a separate C-module (not in `main` or `utils` module)
+            long int num = conversion_to_number(data);
+            printf("%d", number_is_simple(num));
             break;
         }
         default: {
