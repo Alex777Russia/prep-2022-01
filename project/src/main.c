@@ -6,13 +6,14 @@
 #define TST_FOO_FIX     1
 #define TST_FOO_IMPL    2
 #define TST_MOD_IMPL    3
+#define TST_REC_IMPL    4
 
 long int conversion_to_number(const char* str_num) {
     if (*str_num == '\0') {
         return ERR_WRONG_FLG;
     }
     char* end = NULL;
-    long int result = (long int) strtol(str_num, &end, 0);
+    long int result = strtol(str_num, &end, 0);
     if (*end != '\0') {
         return ERR_WRONG_FLG;
     }
@@ -49,6 +50,11 @@ int main(int argc, const char** argv) {
         case TST_MOD_IMPL: {
             long int num = conversion_to_number(data);
             printf("%d", number_is_simple(num));
+            break;
+        }
+        case TST_REC_IMPL: {
+            long int num = conversion_to_number(data);
+            recursive_printing(num);
             break;
         }
         default: {

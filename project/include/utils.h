@@ -12,4 +12,6 @@ int custom_pow(int base, int power);
 
 int number_is_simple(long int number);
 
+void recursive_printing(long int number);
+
 #endif      // PROJECT_INCLUDE_UTILS_H_
