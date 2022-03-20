@@ -1,17 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
 #ifndef PROJECT_INCLUDE_UTILS_H_
 #define PROJECT_INCLUDE_UTILS_H_
 
 
+#include <stdio.h>
+
+
 size_t timer_from(long int from);
 
-long int conversion_to_number(const char* str_num);
+long int custom_pow(long int base, long int power);
 
-int custom_pow(int base, int power);
-
-int number_is_simple(long int number);
-
-void recursive_printing(long int number);
 
 #endif      // PROJECT_INCLUDE_UTILS_H_
