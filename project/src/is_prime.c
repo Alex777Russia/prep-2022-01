@@ -1,6 +1,6 @@
-#include "utils.h"
+#include "is_prime.h"
 
-int is_number_prime(long int number) {
+int is_prime(long int number) {
     if (number < 2) {
         return 0;
     }
