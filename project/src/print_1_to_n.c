@@ -1,13 +1,14 @@
 #include "utils.h"
 
-void recursive_printing(long int number) {
+void print_1_to_n(long int number) {
     if (number == 1) {
     } else if (number > 1) {
-        recursive_printing(number - 1);
+        print_1_to_n(number - 1);
         printf(" ");
     } else {
-        recursive_printing(number + 1);
+        print_1_to_n(number + 1);
         printf(" ");
     }
+
     printf("%ld", number);
 }

@@ -1,5 +1,3 @@
-#define ERR_INCORRECT_POW (-5)
-
 #include "utils.h"
 
 size_t timer_from(long int from) {
@@ -14,19 +12,16 @@ size_t timer_from(long int from) {
         printf("%d\n", 0);
     }
 
-    return counter;
+    return counter;  // Исправить. Последнее действие - перевёл тип функции из int в bool.
 }
 
 
-long int custom_pow(long int base, long int power, long int *result) {
+long int custom_pow(long int base, unsigned long int power) {
     if (!power) {
-        *result = 1;
         return 1;
-    } else if (power < 0) {
-        return ERR_INCORRECT_POW;
     }
 
-    *result = 1;
+    long int result = 1;
 
     while (power) {
         if (power % 2 == 0) {
@@ -34,8 +29,8 @@ long int custom_pow(long int base, long int power, long int *result) {
             base *= base;
         } else {
             --power;
-            *result *= base;
+            result *= base;
         }
     }
-    return 1;
+    return result;
 }
