@@ -17,6 +17,13 @@ size_t timer_from(long int from) {
 
 
 long int custom_pow(long int base, unsigned long int power) {
+    if (power == 0) {
+        return 1;
+    }
+    if (base == 0) {
+        return 0;
+    }
+
     long int result = 1;
 
     while (power != 0) {
