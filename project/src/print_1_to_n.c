@@ -1,11 +1,12 @@
-#include "utils.h"
+#include "print_1_to_n.h"
+
+#include <stdio.h>
 
 void print_1_to_n(long int number) {
-    if (number == 1) {
-    } else if (number > 1) {
+    if (number > 1) {
         print_1_to_n(number - 1);
         printf(" ");
-    } else {
+    } else if (number < 1) {
         print_1_to_n(number + 1);
         printf(" ");
     }

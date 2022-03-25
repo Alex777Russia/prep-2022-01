@@ -1,5 +1,7 @@
 #include "utils.h"
 
+#include <stdio.h>
+
 size_t timer_from(long int from) {
     if (from <= 0) {
         return 0;
@@ -15,13 +17,9 @@ size_t timer_from(long int from) {
 
 
 long int custom_pow(long int base, unsigned long int power) {
-    if (!power) {
-        return 1;
-    }
-
     long int result = 1;
 
-    while (power) {
+    while (power != 0) {
         if (power % 2 == 0) {
             power /= 2;
             base *= base;
@@ -32,4 +30,3 @@ long int custom_pow(long int base, unsigned long int power) {
     }
     return result;
 }
-
