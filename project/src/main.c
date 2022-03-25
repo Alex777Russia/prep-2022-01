@@ -71,16 +71,12 @@ int main(int argc, const char** argv) {
         }
 
         case TST_IS_PRIME_CASE: {
-            long int num = first_argument_for_case;
-
-            printf("%d\n", is_prime(num));
+            printf("%d\n", is_prime(first_argument_for_case));
             break;
         }
 
         case TST_PRINT_1_TO_N_CASE: {
-            long int num = first_argument_for_case;
-
-            print_1_to_n(num);
+            print_1_to_n(first_argument_for_case);
             printf("\n");
             break;
         }
