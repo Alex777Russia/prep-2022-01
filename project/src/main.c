@@ -3,10 +3,9 @@
 int main(void) {
     int choice = 0;
 
-    FILE *Ptr, *Ptr_2, *blackrecord;
+    Data client_data, transfer;
 
-    person person = {0};
-    transfer transfer = {0};
+    FILE *Ptr, *Ptr_2, *blackrecord;
 
     printf("%s", "please enter action\n1 enter data client:\n2 enter data transaction:\n3 update base\n");
 
@@ -17,17 +16,17 @@ int main(void) {
                 if (Ptr == NULL) {
                     puts("Not access");
                 } else {
-                    masterWrite(Ptr, client_data);
+                    masterWrite(Ptr, &client_data);
                     fclose(Ptr);
                 }
                 break;
             }
             case 2: {
-                Ptr = fopen(filename, "r+");
+                Ptr = fopen("transaction.dat", "r+");
                 if (Ptr == NULL) {
                     puts("Not access");
                 } else {
-                    transactionWrite(Ptr, transfer);
+                    transactionWrite(Ptr, &transfer);
                     fclose(Ptr);
                 }
                 break;
@@ -37,11 +36,10 @@ int main(void) {
                 Ptr_2 = fopen("transaction.dat", "r");
                 blackrecord = fopen("blackrecord.dat", "w");
 
-                if (Ptr == NULL || Ptr_2 == NULL || blackRecord == NULL) {
+                if (Ptr == NULL || Ptr_2 == NULL) {
                     puts("exit");
                 } else {
-                    blackRecord(Ptr, Ptr_2, blackrecord, client_data, transfer);
-                    free(Ptr)
+                    blackRecord(Ptr, Ptr_2, blackrecord, &client_data, &transfer);
                     fclose(Ptr);
                     fclose(Ptr_2);
                     fclose(blackrecord);
@@ -58,4 +56,3 @@ int main(void) {
     }
     return 0;
 }
-
