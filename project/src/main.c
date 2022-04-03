@@ -5,44 +5,44 @@ int main(void) {
 
     Data client_data, transfer;
 
-    FILE *Ptr, *Ptr_2, *blackrecord;
+    FILE *First_file, *Second_file, *Client_file;
 
     printf("%s", "please enter action\n1 enter data client:\n2 enter data transaction:\n3 update base\n");
 
     while (scanf("%d", &choice) != -1) {
         switch (choice) {
             case 1: {
-                Ptr = fopen("record.dat", "r+");
-                if (Ptr == NULL) {
+                First_file = fopen("record.dat", "r+");
+                if (First_file == NULL) {
                     puts("Not access");
                 } else {
-                    masterWrite(Ptr, &client_data);
-                    fclose(Ptr);
+                    writeMaster(First_file, &client_data);
+                    fclose(First_file);
                 }
                 break;
             }
             case 2: {
-                Ptr = fopen("transaction.dat", "r+");
-                if (Ptr == NULL) {
+                First_file = fopen("transaction.dat", "r+");
+                if (First_file == NULL) {
                     puts("Not access");
                 } else {
-                    transactionWrite(Ptr, &transfer);
-                    fclose(Ptr);
+                    writeTransaction(First_file, &transfer);
+                    fclose(First_file);
                 }
                 break;
             }
             case 3: {
-                Ptr = fopen("record.dat", "r");
-                Ptr_2 = fopen("transaction.dat", "r");
-                blackrecord = fopen("blackrecord.dat", "w");
+                First_file = fopen("record.dat", "r");
+                Second_file = fopen("transaction.dat", "r");
+                Client_file = fopen("blackrecord.dat", "w");
 
-                if (Ptr == NULL || Ptr_2 == NULL) {
+                if (First_file == NULL || Second_file == NULL) {
                     puts("exit");
                 } else {
-                    blackRecord(Ptr, Ptr_2, blackrecord, &client_data, &transfer);
-                    fclose(Ptr);
-                    fclose(Ptr_2);
-                    fclose(blackrecord);
+                    new_data_client(First_file, Second_file, Client_file, &client_data, &transfer);
+                    fclose(First_file);
+                    fclose(Second_file);
+                    fclose(Client_file);
                 }
                 break;
             }

@@ -1,7 +1,8 @@
 #include  "utils.h"
 
-void blackRecord(FILE *ofPTR, FILE *ofPTR_2, FILE *blackrecord, Data *client_data, Data *transfer) {
-    while (fscanf(ofPTR, "%d%19s%19s%29s%14s%lf%lf%lf",
+void new_data_client(FILE *first_file, FILE *second_file, FILE *client_file,
+                 Data *client_data, Data *transfer) {
+    while (fscanf(first_file, "%d%19s%19s%29s%14s%lf%lf%lf",
                   &client_data->Number,
                   client_data->Name,
                   client_data->Surname,
@@ -10,7 +11,7 @@ void blackRecord(FILE *ofPTR, FILE *ofPTR_2, FILE *blackrecord, Data *client_dat
                   &client_data->indebtedness,
                   &client_data->credit_limit,
                   &client_data->cash_payments) != -1) {
-        while (fscanf(ofPTR_2, "%d %lf",
+        while (fscanf(second_file, "%d %lf",
                       &transfer->Number,
                       &transfer->cash_payments) != -1) {
             if (client_data->Number == transfer->Number && transfer->cash_payments != 0) {
@@ -18,7 +19,7 @@ void blackRecord(FILE *ofPTR, FILE *ofPTR_2, FILE *blackrecord, Data *client_dat
             }
         }
 
-        fprintf(blackrecord, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
+        fprintf(client_file, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
                 client_data->Number,
                 client_data->Name,
                 client_data->Surname,
@@ -27,19 +28,19 @@ void blackRecord(FILE *ofPTR, FILE *ofPTR_2, FILE *blackrecord, Data *client_dat
                 client_data->indebtedness,
                 client_data->credit_limit,
                 client_data->cash_payments);
-        rewind(ofPTR_2);
+        rewind(second_file);
     }
 }
 
 
-void transactionWrite(FILE *ofPtr, Data *transfer) {
+void writeTransaction(FILE *file, Data *transfer) {
     printf("%s\n%s\n",
            "1 Number account: ",
            "2 Client cash payments: ");
     while (scanf("%d %lf",
                  &transfer->Number,
                  &transfer->cash_payments) != -1) {
-        fprintf(ofPtr, "%-3d%-6.2f\n",
+        fprintf(file, "%-3d%-6.2f\n",
                 transfer->Number,
                 transfer->cash_payments);
         printf("%s\n%s\n",
@@ -49,7 +50,7 @@ void transactionWrite(FILE *ofPtr, Data *transfer) {
 }
 
 
-void masterWrite(FILE *ofPTR, Data *Client) {
+void writeMaster(FILE *file, Data *Client) {
     printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n",
            "1 Number account: ",
            "2 Client name: ",
@@ -69,7 +70,7 @@ void masterWrite(FILE *ofPTR, Data *Client) {
                  &Client->indebtedness,
                  &Client->credit_limit,
                  &Client->cash_payments) != -1) {
-        fprintf(ofPTR, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
+        fprintf(file, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
                 Client->Number,
                 Client->Name,
                 Client->Surname,

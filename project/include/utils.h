@@ -14,10 +14,11 @@ typedef struct masterRecord {
     double cash_payments;
 } Data;
 
-void transactionWrite(FILE *ofPtr, Data *transfer);
+void writeTransaction(FILE *file, Data *transfer);
 
-void masterWrite(FILE *ofPTR, Data *Client);
+void writeMaster(FILE *file, Data *Client);
 
-void blackRecord(FILE *ofPTR, FILE *ofPTR_2, FILE *blackrecord, Data *client_data, Data *transfer);
+void new_data_client(FILE *first_file, FILE *second_file, FILE *client_file,
+                 Data *client_data, Data *transfer);
 
 #endif  // PROJECT_INCLUDE_UTILS_H_
