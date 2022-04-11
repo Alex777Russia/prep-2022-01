@@ -69,11 +69,22 @@ int get_elem(const Matrix* matrix, size_t row, size_t col, double* val) {
 }
 
 int set_elem(Matrix* matrix, size_t row, size_t col, double val) {
-    if (matrix == NULL && row == 0 && col == 0) {
+    if (matrix == NULL) {
         return -1;
     }
 
-    matrix->array[row * matrix->cols + col] = val;
+    size_t rows = 0;
+    size_t cols = 0;
+
+    if (get_rows(matrix, &rows) != 0 || get_cols(matrix, &cols) != 0) {
+        return -1;  // TODO (Alex Shevchenko): Завести новые константы
+    }
+
+    if (row >= rows || col >= cols) {
+        return -2; // TODO (Alex Shevchenko): Завести новые константы
+    }
+
+    matrix->array[row * cols + col] = val;
     return 0;
 }
 
