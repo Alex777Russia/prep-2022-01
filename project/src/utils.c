@@ -1,92 +1,72 @@
 #include  "utils.h"
 
-void new_data_client(FILE *first_file, FILE *second_file, FILE *client_file,
-                 Data *client_data, Data *transfer) {
-    while (fscanf(first_file, "%d%19s%19s%29s%14s%lf%lf%lf",
-                  &client_data->Number,
-                  client_data->Name,
-                  client_data->Surname,
-                  client_data->address,
-                  client_data->telephoneNumber,
-                  &client_data->indebtedness,
-                  &client_data->credit_limit,
-                  &client_data->cash_payments) != -1) {
-        while (fscanf(second_file, "%d %lf",
-                      &transfer->Number,
-                      &transfer->cash_payments) != -1) {
-            if (client_data->Number == transfer->Number && transfer->cash_payments != 0) {
-                client_data->credit_limit += transfer->cash_payments;
+enum ERROR_RETURN_CODES {
+    ERR_PRINT_TO_FILE_USING_FUNC = -1,
+    ERR_PRINT_CLIENTS_TO_FILE = -2,
+    ERR_PRINT_TRANSACTIONS_TO_FILE = -3,
+    ERR_PRINT_CLIENT_OBJ_TEMPLATE_FOR_INPUT = -4,
+    ERR_PRINT_CLIENT_OBJ = -5,
+    NULL_DESCRIPTOR_OF_FILE = -6,
+};
+
+static int print_to_file_using_func(FILE *file,
+                                    int (*read_obj)(FILE *, client *),
+                                    int (*print_client_obj)(FILE *, client *),
+                                    int (*print_client_obj_template_for_input)(FILE *)) {
+    if (file == NULL) {
+        return NULL_DESCRIPTOR_OF_FILE;
+    }
+
+    client client_obj = {0};  // client or transaction
+    if (print_client_obj_template_for_input(stdout) != 0) {
+        return ERR_PRINT_CLIENT_OBJ_TEMPLATE_FOR_INPUT;
+    }
+    while (read_obj(stdin, &client_obj) == 0) {
+        if (print_client_obj(file, &client_obj) != 0) {
+            return ERR_PRINT_CLIENT_OBJ;
+        }
+        if (print_client_obj_template_for_input(stdout) != 0) {
+            return ERR_PRINT_CLIENT_OBJ_TEMPLATE_FOR_INPUT;
+        }
+    }
+
+    return 0;
+}
+
+int print_clients_to_file(FILE *clients_file) {
+    if (print_to_file_using_func(clients_file, read_person,
+                                 print_person, print_person_template_for_input) != 0) {
+        return ERR_PRINT_CLIENTS_TO_FILE;
+    }
+
+    return 0;
+}
+
+int print_transactions_to_file(FILE *transactions_file) {
+    if (print_to_file_using_func(transactions_file, read_transaction,
+                                 print_transaction, print_transaction_template_for_input) != 0) {
+        return ERR_PRINT_TRANSACTIONS_TO_FILE;
+    }
+
+    return 0;
+}
+
+int update_clients(FILE *clients_file, FILE *transactions_file, FILE *clients_after_transactions_file) {
+    if (clients_file == NULL || transactions_file == NULL || clients_after_transactions_file == NULL) {
+        return NULL_DESCRIPTOR_OF_FILE;
+    }
+
+    client person = {0};
+    client transaction = {0};
+    while (read_person(clients_file, &person) == 0) {
+        while (read_transaction(transactions_file, &transaction) == 0) {
+            if (person.number == transaction.number && transaction.cash_payments != 0) {
+                person.credit_limit += transaction.cash_payments;
             }
         }
-
-        fprintf(client_file, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
-                client_data->Number,
-                client_data->Name,
-                client_data->Surname,
-                client_data->address,
-                client_data->telephoneNumber,
-                client_data->indebtedness,
-                client_data->credit_limit,
-                client_data->cash_payments);
-        rewind(second_file);
-    }
-}
-
-
-void writeTransaction(FILE *file, Data *transfer) {
-    printf("%s\n%s\n",
-           "1 Number account: ",
-           "2 Client cash payments: ");
-    while (scanf("%d %lf",
-                 &transfer->Number,
-                 &transfer->cash_payments) != -1) {
-        fprintf(file, "%-3d%-6.2f\n",
-                transfer->Number,
-                transfer->cash_payments);
-        printf("%s\n%s\n",
-               "1 Number account: ",
-               "2 Client cash payments: ");
-    }
-}
-
-
-void writeMaster(FILE *file, Data *Client) {
-    printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n",
-           "1 Number account: ",
-           "2 Client name: ",
-           "3 Surname: ",
-           "4 Address client: ",
-           "5 Client Telephone number: ",
-           "6 Client indebtedness: ",
-           "7 Client credit limit: ",
-           "8 Client cash payments: ");
-
-    while (scanf("%d%19s%19s%29s%14s%lf%lf%lf",
-                 &Client->Number,
-                 Client->Name,
-                 Client->Surname,
-                 Client->address,
-                 Client->telephoneNumber,
-                 &Client->indebtedness,
-                 &Client->credit_limit,
-                 &Client->cash_payments) != -1) {
-        fprintf(file, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
-                Client->Number,
-                Client->Name,
-                Client->Surname,
-                Client->address,
-                Client->telephoneNumber,
-                Client->indebtedness,
-                Client->credit_limit,
-                Client->cash_payments);
-        printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n",
-               "1 Number account: ",
-               "2 Client name: ",
-               "3 Surname: ",
-               "4 Address client: ",
-               "5 Client Telephone number: ",
-               "6 Client indebtedness: ",
-               "7 Client credit limit: ",
-               "8 Client cash payments: ");
+        if (print_person(clients_after_transactions_file, &person) != 0) {
+            return ERR_PRINT_CLIENT_OBJ;
+        }
+        rewind(transactions_file);
     }
 }

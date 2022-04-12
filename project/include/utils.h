@@ -1,24 +1,15 @@
 #ifndef PROJECT_INCLUDE_UTILS_H_
 #define PROJECT_INCLUDE_UTILS_H_
 
-#include <stdio.h>
+#include "client.h"
+#include "read_and_print_data.h"
 
-typedef struct masterRecord {
-    int Number;
-    char Name[20];
-    char Surname[20];
-    char address[30];
-    char telephone_Number[15];
-    double indebtedness;
-    double credit_limit;
-    double cash_payments;
-} Data;
+int print_clients_to_file(FILE *clients_file);
 
-void writeTransaction(FILE *file, Data *transfer);
+int print_transactions_to_file(FILE *transactions_file);
 
-void writeMaster(FILE *file, Data *Client);
-
-void new_data_client(FILE *first_file, FILE *second_file, FILE *client_file,
-                 Data *client_data, Data *transfer);
+int update_clients(FILE *clients_file,
+                   FILE *transactions_file,
+                   FILE *clients_after_transactions_file);
 
 #endif  // PROJECT_INCLUDE_UTILS_H_
