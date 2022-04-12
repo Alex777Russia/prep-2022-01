@@ -69,4 +69,5 @@ int update_clients(FILE *clients_file, FILE *transactions_file, FILE *clients_af
         }
         rewind(transactions_file);
     }
+    return 0;
 }
