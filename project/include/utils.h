@@ -8,7 +8,7 @@ typedef struct masterRecord {
     char Name[20];
     char Surname[20];
     char address[30];
-    char TelephoneNumber[15];
+    char telephone_Number[15];
     double indebtedness;
     double credit_limit;
     double cash_payments;
