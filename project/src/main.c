@@ -1,7 +1,7 @@
 #include "matrix.h"
 
 int main(void) {
-    Matrix* array = create_matrix_from_file("D:\\WorkPrograms\\C++\\making-hw-3\\Kal.txt");
+    Matrix* array = create_matrix_from_file("D:\\BMSTU_Season_2\\Technopark\\making-hw-3\\Matrix.txt");
     for (size_t i = 0; i < array->rows * array->cols; ++i) {
         printf("%lf ", array->array[i]);
     }
